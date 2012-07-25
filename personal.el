@@ -15,6 +15,7 @@
 
 ;; For other global settings, just run the appropriate function; all
 ;; personal/*.el files will be evaluate after prelude-emacs is loaded.
+(guru-mode -1)
 
 ;; disable line highlight
 (global-hl-line-mode -1)
