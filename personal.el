@@ -6,16 +6,19 @@
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 
 ;; disable whitespace-mode and whitespace-cleanup
-(add-hook 'prelude-prog-mode-hook
-          (lambda ()
-            (prelude-turn-off-whitespace)
-            (turn-off-flyspell)
-            (add-hook 'before-save-hook 'whitespace-cleanup)
-            ) t)
+(defun disable-prelude-prog-mode-crap ()
+  (prelude-turn-off-whitespace)
+  (turn-off-flyspell)
+  (guru-mode -1)
+  (add-hook 'before-save-hook 'whitespace-cleanup))
 
-;; For other global settings, just run the appropriate function; all
-;; personal/*.el files will be evaluate after prelude-emacs is loaded.
-(guru-mode -1)
+(add-hook 'prelude-prog-mode-hook 'disable-prelude-prog-mode-crap t)
+
+(defun disable-prelude-lisp-mode-crap ()
+  (paredit-mode -1)
+  t)
+
+(add-hook 'prelude-lisp-coding-hook 'disable-prelude-lisp-mode-crap t)
 
 ;; disable line highlight
 (global-hl-line-mode -1)
@@ -123,6 +126,20 @@
      (add-to-list 'load-path "/Users/204114/apps/ensime-github/dist_2.9.2/elisp")
 
      (require 'ensime)
+
+     ;; (defvar my-ensime-active-subproject "adx-main")
+
+     ;; (defadvice ensime-config-maybe-set-active-subproject
+     ;;   (around my-ensime-config-maybe-set-active-subproject)
+     ;;   "this will stop ensime from asking what the main project is"
+     ;;   (if my-ensime-active-subproject
+     ;;       (let (config (ad-get-arg 0))
+     ;;         (message "subproject: %s" my-ensime-active-subproject)
+     ;;         (ensime-set-key config :active-subproject my-ensime-active-subproject))
+     ;;     ad-do-it))
+
+     ;; (ad-activate 'ensime-config-maybe-set-active-subproject)
+
      (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)))
 
 (global-set-key [C-M-s-left] 'backward-mark)

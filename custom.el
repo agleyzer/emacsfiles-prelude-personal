@@ -19,6 +19,7 @@
  '(kill-whole-line t)
  '(locate-command "mdfind")
  '(make-backup-files t)
+ '(ns-pop-up-frames nil)
  '(org-adapt-indentation nil)
  '(org-export-html-postamble nil)
  '(pcomplete-ignore-case t)
