@@ -14,13 +14,22 @@
 
 (add-hook 'prelude-prog-mode-hook 'disable-prelude-prog-mode-crap t)
 
+;; paredit mode is driving me nuts
 (defun disable-prelude-lisp-mode-crap ()
   (paredit-mode -1)
   t)
 
 (add-hook 'prelude-lisp-coding-hook 'disable-prelude-lisp-mode-crap t)
 
-;; disable line highlight
+;; Just in case this is used anywhere...
+(defun prelude-turn-on-flyspell ()
+  "Stop flyspell madness")
+
+;; Still, let's remove hooks from prelude
+(remove-hook 'message-mode-hook 'prelude-turn-on-flyspell)
+(remove-hook 'text-mode-hook 'prelude-turn-on-flyspell)
+
+;; Disable line highlight
 (global-hl-line-mode -1)
 (xterm-mouse-mode)
 
@@ -29,13 +38,8 @@
 
 (add-to-list 'auto-mode-alist '("\\.ctxsrc$" . javascript-mode))
 
-
-;; (prelude-restore-arrow-keys)
-
 ;; (insert "\n(set-default-font \"" (cdr (assoc 'font (frame-parameters))) "\")\n")
 (set-default-font "-apple-Anonymous_Pro-medium-normal-normal-*-20-*-*-*-m-0-iso10646-1")
-
-;; (set-default-font "-apple-Inconsolata-medium-normal-normal-*-20-*-*-*-m-0-iso10646-1")
 
 ;; disable annoying parens
 (electric-pair-mode -1)
@@ -86,26 +90,6 @@
 (global-set-key (quote [home]) (quote beginning-of-line))
 (global-set-key (quote [end]) (quote end-of-line))
 (global-set-key (quote [f6]) (quote (lambda () (interactive) (compile "curl -v http://localhost:8080/adx/foo"))))
-
-
-;;; Remove hooks from prelude
-;;; (remove-hook 'message-mode-hook 'prelude-turn-on-flyspell)
-;;; (remove-hook 'text-mode-hook 'prelude-turn-on-flyspell)
-
-;;; ;; Overwrite prelude function removing flyspell-prog-mode
-;;; (defun my-prelude-coding-hook ()
-;;;   (prelude-local-comment-auto-fill)
-;;;   ;; (prelude-turn-off-whitespace)
-;;;   ;; (prelude-turn-on-abbrev)
-;;;   ;; (prelude-add-watchwords)
-;;;   ;; keep the whitespace decent all the time (in this buffer)
-;;;   (add-hook 'before-save-hook 'whitespace-cleanup nil t))
-;;;
-;;; ;; remove default prelude hook
-;;; (remove-hook 'prelude-prog-mode-hook 'prelude-prog-mode-defaults)
-;;;
-;;; ;; add mine
-;;; (add-hook 'prelude-prog-mode-hook 'my-prelude-coding-hook t)
 
 ;; Scala and Ensime
 (add-to-list 'auto-mode-alist '("\\.scala$" . scala-mode))
