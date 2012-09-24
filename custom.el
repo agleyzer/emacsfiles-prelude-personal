@@ -29,7 +29,7 @@
  '(size-indication-mode t)
  '(speedbar-show-unknown-files t)
  '(speedbar-use-images nil)
- '(sql-database "adx-db01.qprvt.nytimes.com:1531/ADXDV8")
+ '(sql-database "adx-db01.qprvt.nytimes.com:1531/ADXDV")
  '(sql-password "adx789")
  '(sql-user "adx")
  '(tool-bar-mode nil)
