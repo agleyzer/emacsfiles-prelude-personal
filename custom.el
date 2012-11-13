@@ -4,6 +4,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(blink-cursor-mode nil)
+ '(c-basic-offset 4)
  '(column-number-mode t)
  '(cua-enable-cua-keys (quote shift))
  '(cua-mode t nil (cua-base))
@@ -22,6 +23,7 @@
  '(ns-pop-up-frames nil)
  '(org-adapt-indentation nil)
  '(org-export-html-postamble nil)
+ '(org-use-sub-superscripts nil)
  '(pcomplete-ignore-case t)
  '(scroll-bar-mode nil)
  '(server-mode t)
@@ -29,7 +31,7 @@
  '(size-indication-mode t)
  '(speedbar-show-unknown-files t)
  '(speedbar-use-images nil)
- '(sql-database "adx-db01.qprvt.nytimes.com:1531/ADXDV")
+ '(sql-database "adx-db01.qprvt.nytimes.com:1531/ADXDV8")
  '(sql-password "adx789")
  '(sql-user "adx")
  '(tool-bar-mode nil)

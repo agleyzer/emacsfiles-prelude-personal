@@ -14,6 +14,11 @@
 
 (add-hook 'prelude-prog-mode-hook 'disable-prelude-prog-mode-crap t)
 
+(defun my-c++-hook ()
+  (global-set-key (quote [f3]) (lambda () (interactive )(compile "rmake"))))
+
+(add-hook 'c++-mode-hook 'my-c++-hook)
+
 ;; paredit mode is driving me nuts
 (defun disable-prelude-lisp-mode-crap ()
   (paredit-mode -1)
@@ -39,7 +44,9 @@
 (add-to-list 'auto-mode-alist '("\\.ctxsrc$" . javascript-mode))
 
 ;; (insert "\n(set-default-font \"" (cdr (assoc 'font (frame-parameters))) "\")\n")
-(set-default-font "-apple-Anonymous_Pro-medium-normal-normal-*-20-*-*-*-m-0-iso10646-1")
+;; (set-default-font "-apple-Anonymous_Pro-medium-normal-normal-*-20-*-*-*-m-0-iso10646-1")
+
+(set-default-font "-apple-Source_Code_Pro-medium-normal-normal-*-20-*-*-*-m-0-iso10646-1")
 
 ;; disable annoying parens
 (electric-pair-mode -1)
@@ -59,6 +66,9 @@
   (set-frame-height (selected-frame) 20))
 
 (global-set-key (quote [f3]) 'set-frame-position-to-zero)
+
+
+
 
 (global-hl-line-mode -1)
 
@@ -217,3 +227,12 @@
 
 (global-set-key [C-S-right] 'shift-right)
 (global-set-key [C-S-left] 'shift-left)
+
+
+;; this supposed to copy environment values from shell
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))
+(exec-path-from-shell-copy-env "DYLD_LIBRARY_PATH")
+
+(require 'expand-region)
+(global-set-key (kbd "C-=") 'er/expand-region)
