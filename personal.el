@@ -7,9 +7,6 @@
 
 ;; disable whitespace-mode and whitespace-cleanup
 (defun disable-prelude-prog-mode-crap ()
-  ;; (prelude-turn-off-whitespace)
-  (whitespace-turn-off)
-  (turn-off-flyspell)
   (guru-mode -1)
   (add-hook 'before-save-hook 'whitespace-cleanup))
 
@@ -26,14 +23,6 @@
   t)
 
 (add-hook 'prelude-lisp-coding-hook 'disable-prelude-lisp-mode-crap t)
-
-;; Just in case this is used anywhere...
-(defun prelude-turn-on-flyspell ()
-  "Stop flyspell madness")
-
-;; Still, let's remove hooks from prelude
-(remove-hook 'message-mode-hook 'prelude-turn-on-flyspell)
-(remove-hook 'text-mode-hook 'prelude-turn-on-flyspell)
 
 ;; Disable line highlight
 (global-hl-line-mode -1)
@@ -72,8 +61,8 @@
 
 
 (global-hl-line-mode -1)
-
-;; (whitespace-mode -1)
+(setq prelude-whitespace t)
+(setq prelude-flyspell nil)
 
 ;; Kills all them buffers except scratch
 ;; optained from http://www.chrislott.org/geek/emacs/dotemacs.html
@@ -200,7 +189,7 @@
     (switch-to-buffer "*ansi-term*")))
 
 ;; zsh stuff - this should prevent stupid named dirs showing up in the output
-;; (setq shell-dirstack-query "hash -dr; dirs")
+;; (svbetq shell-dirstack-query "hash -dr; dirs")
 
 ;; Shift the selected region right if distance is positive, left if
 ;; negative
@@ -238,3 +227,9 @@
 
 (require 'expand-region)
 (global-set-key (kbd "C-=") 'er/expand-region)
+
+; disable bold faces, yeah
+(mapc
+ (lambda (face)
+   (set-face-attribute face nil :weight 'normal :underline nil))
+ (face-list))
