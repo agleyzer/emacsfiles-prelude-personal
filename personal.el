@@ -7,7 +7,8 @@
 
 ;; disable whitespace-mode and whitespace-cleanup
 (defun disable-prelude-prog-mode-crap ()
-  (prelude-turn-off-whitespace)
+  ;; (prelude-turn-off-whitespace)
+  (whitespace-turn-off)
   (turn-off-flyspell)
   (guru-mode -1)
   (add-hook 'before-save-hook 'whitespace-cleanup))
@@ -102,6 +103,7 @@
 (global-set-key (quote [f6]) (quote (lambda () (interactive) (compile "curl -v http://localhost:8080/adx/foo"))))
 
 ;; Scala and Ensime
+
 (add-to-list 'auto-mode-alist '("\\.scala$" . scala-mode))
 
 (eval-after-load 'scala-mode
@@ -117,7 +119,7 @@
                   (subword-mode +1)))
 
      ;; (add-to-list 'load-path (expand-file-name "~/apps/ensime/elisp/"))
-     (add-to-list 'load-path "/Users/204114/apps/ensime-github/dist_2.9.2/elisp")
+     (add-to-list 'load-path (expand-file-name "~/apps/ensime-github/dist_2.9.2/elisp"))
 
      (require 'ensime)
 

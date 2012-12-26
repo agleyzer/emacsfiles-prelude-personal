@@ -4,6 +4,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(blink-cursor-mode nil)
+ '(bmkp-auto-idle-bookmark-mode-delay 60)
+ '(bmkp-last-as-first-bookmark-file "~/.emacs.d/savefile/bookmarks")
  '(c-basic-offset 4)
  '(column-number-mode t)
  '(cua-enable-cua-keys (quote shift))
