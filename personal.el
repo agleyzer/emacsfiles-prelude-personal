@@ -1,14 +1,6 @@
-; Here are some examples of how to override the defaults for the
-;; various prelude-emacs settings.  To *append* to any of the
-;; configurations attached to prelude-*-hooks, you can attach a
-;; function to the appropriate hook:
-
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-
-(defun my-c++-hook ()
-  (global-set-key (quote [f3]) (lambda () (interactive )(compile "rmake"))))
-
-(add-hook 'c++-mode-hook 'my-c++-hook)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Disabling some stupid prelude settings. ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; paredit mode is driving me nuts
 (defun disable-prelude-lisp-mode-crap ()
@@ -22,38 +14,8 @@
 ;; Disable line highlight
 (global-hl-line-mode -1)
 
-;; TODO make it work in text mode only
-(when (not (display-graphic-p))
-  (xterm-mouse-mode))
-
-;; make the cursor blinking
-;; (blink-cursor-mode t)
-
-(add-to-list 'auto-mode-alist '("\\.ctxsrc$" . javascript-mode))
-
-;; (insert "\n(set-default-font \"" (cdr (assoc 'font (frame-parameters))) "\")\n")
-;; (set-default-font "-apple-Anonymous_Pro-medium-normal-normal-*-20-*-*-*-m-0-iso10646-1")
-
-(set-default-font "-apple-Source_Code_Pro-medium-normal-normal-*-20-*-*-*-m-0-iso10646-1")
-
 ;; disable annoying parens
 (electric-pair-mode -1)
-
-;; turn off the bell
-(setq ring-bell-function 'ignore)
-
-;; command -/= to scale text
-(global-set-key (kbd "s--") 'text-scale-decrease)
-(global-set-key (kbd "s-=") 'text-scale-increase)
-(global-set-key (kbd "s-F") 'ns-toggle-fullscreen)
-
-(defun set-frame-position-to-zero ()
-  (interactive)
-  (set-frame-position (selected-frame) 0 0)
-  (set-frame-width (selected-frame) 80)
-  (set-frame-height (selected-frame) 20))
-
-(global-set-key (quote [f3]) 'set-frame-position-to-zero)
 
 ;; disable stupid prelude defaults
 (defun prelude-c-mode-common-defaults ()
@@ -73,6 +35,56 @@
 (diminish 'prelude-mode "Prel")
 (diminish 'abbrev-mode)
 
+;; this is so prelude uses my current shell
+(defun prelude-visit-term-buffer ()
+  (interactive)
+  (if (not (get-buffer "*ansi-term*"))
+      (ansi-term "/bin/zsh")
+    (switch-to-buffer "*ansi-term*")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Other custom settings ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; turn off the bell
+(setq ring-bell-function 'ignore)
+
+
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+
+(defun my-c++-hook ()
+  (local-set-key (quote [f4]) (lambda () (interactive )(compile "rmake"))))
+
+(add-hook 'c++-mode-hook 'my-c++-hook)
+
+
+
+;; TODO make it work in text mode only
+(when (not (display-graphic-p))
+  (xterm-mouse-mode))
+
+;; make the cursor blinking
+;; (blink-cursor-mode t)
+
+(add-to-list 'auto-mode-alist '("\\.ctxsrc$" . javascript-mode))
+
+;; (insert "\n(set-default-font \"" (cdr (assoc 'font (frame-parameters))) "\")\n")
+;; (set-default-font "-apple-Anonymous_Pro-medium-normal-normal-*-20-*-*-*-m-0-iso10646-1")
+
+(set-default-font "-apple-Source_Code_Pro-medium-normal-normal-*-20-*-*-*-m-0-iso10646-1")
+
+;; command -/= to scale text
+(global-set-key (kbd "s--") 'text-scale-decrease)
+(global-set-key (kbd "s-=") 'text-scale-increase)
+(global-set-key (kbd "s-F") 'ns-toggle-fullscreen)
+
+(defun set-frame-position-to-zero ()
+  (interactive)
+  (set-frame-position (selected-frame) 0 0)
+  (set-frame-width (selected-frame) 80)
+  (set-frame-height (selected-frame) 20))
+
+
 ;; Kills all them buffers except scratch
 ;; optained from http://www.chrislott.org/geek/emacs/dotemacs.html
 (defun nuke-all-buffers ()
@@ -82,23 +94,12 @@
           (buffer-list))
   (delete-other-windows))
 
-(global-set-key (quote [f5]) (quote nuke-all-buffers))
-
 (defun my-shell ()
   (interactive)
   (delete-other-windows)
   (split-window)
   (other-window 1)
   (shell))
-
-;; Set some keys - that's the way I like it :)
-(global-set-key "\M-s" (quote my-shell))
-(global-set-key "\M-g" (quote goto-line))
-(global-set-key (quote [f1]) (quote manual-entry))
-(global-set-key (quote [C-tab]) (quote other-window))
-(global-set-key (quote [home]) (quote beginning-of-line))
-(global-set-key (quote [end]) (quote end-of-line))
-(global-set-key (quote [f6]) (quote (lambda () (interactive) (compile "curl -v http://localhost:8080/adx/foo"))))
 
 ;; Scala and Ensime
 
@@ -136,8 +137,6 @@
 
      (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)))
 
-(global-set-key [C-M-s-left] 'backward-mark)
-(global-set-key [C-M-s-right] 'forward-mark)
 (defun my-pop-global-mark ()
   "Pop off global mark ring and jump to the top location."
   (interactive)
@@ -171,8 +170,7 @@
   (setq
    deft-extension "org"
    deft-directory "~/Dropbox/orgfiles/"
-   deft-text-mode 'org-mode)
-  (global-set-key (quote [f2]) 'deft))
+   deft-text-mode 'org-mode))
 
 ;; change magit diff colors
 (eval-after-load 'magit
@@ -187,14 +185,8 @@
           (function
            (lambda ()
              (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix))))
-(setq system-uses-terminfo nil)
 
-;; this is so prelude uses my current shell
-(defun prelude-visit-term-buffer ()
-  (interactive)
-  (if (not (get-buffer "*ansi-term*"))
-      (ansi-term "/bin/zsh")
-    (switch-to-buffer "*ansi-term*")))
+(setq system-uses-terminfo nil)
 
 ;; zsh stuff - this should prevent stupid named dirs showing up in the output
 ;; (svbetq shell-dirstack-query "hash -dr; dirs")
@@ -224,20 +216,38 @@
 ;; column to the right, Ctrl-Shift-Left Arrow moves selected text one
 ;; column to the left:
 
-(global-set-key [C-S-right] 'shift-right)
-(global-set-key [C-S-left] 'shift-left)
-
-
 ;; this supposed to copy environment values from shell
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
+
 (exec-path-from-shell-copy-env "DYLD_LIBRARY_PATH")
 
 (require 'expand-region)
 (global-set-key (kbd "C-=") 'er/expand-region)
 
-; disable bold faces, yeah
+;; disable bold faces, yeah
 (mapc
  (lambda (face)
    (set-face-attribute face nil :weight 'normal :underline nil))
  (face-list))
+
+;; Set some keys - that's the way I like it :)
+(global-set-key "\M-s" 'my-shell)
+(global-set-key "\M-g" 'goto-line)
+
+(global-set-key [C-tab] 'other-window)
+(global-set-key [home] 'beginning-of-line)
+(global-set-key [end] 'end-of-line)
+
+(global-set-key [f2] 'deft)
+(global-set-key [f3] 'set-frame-position-to-zero)
+(global-set-key [f4] 'compile)
+
+(global-set-key [f5] 'nuke-all-buffers)
+(global-set-key [f6] (quote (lambda () (interactive) (compile "curl -v http://localhost:8080/adx/foo"))))
+
+(global-set-key [C-M-s-left] 'backward-mark)
+(global-set-key [C-M-s-right] 'forward-mark)
+
+(global-set-key [C-S-right] 'shift-right)
+(global-set-key [C-S-left] 'shift-left)
