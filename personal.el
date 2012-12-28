@@ -5,13 +5,6 @@
 
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 
-;; disable whitespace-mode and whitespace-cleanup
-(defun disable-prelude-prog-mode-crap ()
-  (guru-mode -1)
-  (add-hook 'before-save-hook 'whitespace-cleanup))
-
-(add-hook 'prelude-prog-mode-hook 'disable-prelude-prog-mode-crap t)
-
 (defun my-c++-hook ()
   (global-set-key (quote [f3]) (lambda () (interactive )(compile "rmake"))))
 
@@ -20,13 +13,18 @@
 ;; paredit mode is driving me nuts
 (defun disable-prelude-lisp-mode-crap ()
   (paredit-mode -1)
-  t)
+  (diminish 'rainbow-mode)
+  (diminish 'elisp-slime-nav-mode)
+  (diminish 'volatile-highlights-mode))
 
-(add-hook 'prelude-lisp-coding-hook 'disable-prelude-lisp-mode-crap t)
+(add-hook 'emacs-lisp-mode-hook 'disable-prelude-lisp-mode-crap t)
 
 ;; Disable line highlight
 (global-hl-line-mode -1)
-(xterm-mouse-mode)
+
+;; TODO make it work in text mode only
+(when (not (display-graphic-p))
+  (xterm-mouse-mode))
 
 ;; make the cursor blinking
 ;; (blink-cursor-mode t)
@@ -57,12 +55,23 @@
 
 (global-set-key (quote [f3]) 'set-frame-position-to-zero)
 
-
-
+;; disable stupid prelude defaults
+(defun prelude-c-mode-common-defaults ()
+  (setq indent-tabs-mode nil)
+  (setq c-basic-offset 4))
 
 (global-hl-line-mode -1)
-(setq prelude-whitespace t)
+(setq prelude-whitespace nil)
 (setq prelude-flyspell nil)
+(setq prelude-guru nil)
+(yas-global-mode -1)
+
+;; hide stupid minor modes from my modeline
+(diminish 'eldoc-mode)
+(diminish 'ruby-block-mode)
+(diminish 'projectile-mode "Proj")
+(diminish 'prelude-mode "Prel")
+(diminish 'abbrev-mode)
 
 ;; Kills all them buffers except scratch
 ;; optained from http://www.chrislott.org/geek/emacs/dotemacs.html
@@ -157,7 +166,6 @@
 
 (global-set-key [M-s-left] 'my-pop-global-mark)
 (global-set-key [C-M-s-left] 'pop-to-mark-command)
-
 
 (when (require 'deft nil) 'noerror
   (setq

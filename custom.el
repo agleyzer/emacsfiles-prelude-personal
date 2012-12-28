@@ -16,6 +16,7 @@
  '(ensime-sbt-compile-on-save nil)
  '(exec-path (quote ("/Users/204114/apps/instantclient_10_2" "/Users/204114/bin" "/opt/local/sbin" "/opt/local/bin" "/usr/local/bin" "/usr/bin" "/bin" "/usr/sbin" "/sbin" "/usr/local/Cellar/emacs/HEAD/libexec/emacs/24.0.94/i386-apple-darwin10.8.0")))
  '(fci-rule-color "#383838")
+ '(indent-tabs-mode nil)
  '(indicate-buffer-boundaries (quote right))
  '(initial-scratch-message nil)
  '(js-indent-level 2)
