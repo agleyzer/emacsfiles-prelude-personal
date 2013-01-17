@@ -1,3 +1,6 @@
 *~
 *.elc
 .DS_Store
+
+# this comes from prelude being one level up
+.gitkeep

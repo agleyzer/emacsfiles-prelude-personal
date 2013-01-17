@@ -6,8 +6,8 @@
 (defun disable-prelude-lisp-mode-crap ()
   (paredit-mode -1)
   (diminish 'rainbow-mode)
-  (diminish 'elisp-slime-nav-mode)
-  (diminish 'volatile-highlights-mode))
+  (diminish 'volatile-highlights-mode)
+)
 
 (add-hook 'emacs-lisp-mode-hook 'disable-prelude-lisp-mode-crap t)
 
@@ -28,9 +28,16 @@
 (setq prelude-guru nil)
 (yas-global-mode -1)
 
+
+;; disabling prelude-whitespace removes whitespace cleanup... fuck
+(defun my-prog-mode-defaults ()
+  (add-hook 'before-save-hook 'whitespace-cleanup nil t))
+
+(add-hook 'prelude-prog-mode-hook 'my-prog-mode-defaults t)
+
 ;; hide stupid minor modes from my modeline
 (diminish 'eldoc-mode)
-(diminish 'ruby-block-mode)
+;; (diminish 'ruby-block-mode)
 (diminish 'projectile-mode "Proj")
 (diminish 'prelude-mode "Prel")
 (diminish 'abbrev-mode)
@@ -105,10 +112,10 @@
 
 (add-to-list 'auto-mode-alist '("\\.scala$" . scala-mode))
 
-(eval-after-load 'scala-mode
+(eval-after-load 'scala-mode2
   '(progn
-     (require 'scala-mode-auto)
-     (require 'scala-mode-feature-speedbar)
+     (message "scala-mode2 ftw")
+
      (add-hook 'scala-mode-hook
                '(lambda ()
                   (add-hook 'before-save-hook 'whitespace-cleanup)
