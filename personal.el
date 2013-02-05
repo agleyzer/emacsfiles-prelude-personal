@@ -74,6 +74,9 @@
 ;; (blink-cursor-mode t)
 
 (add-to-list 'auto-mode-alist '("\\.ctxsrc$" . javascript-mode))
+(add-to-list 'auto-mode-alist '("\\.ctxinc$" . javascript-mode))
+(add-to-list 'auto-mode-alist '("\\.in$" . javascript-mode))
+
 
 ;; (insert "\n(set-default-font \"" (cdr (assoc 'font (frame-parameters))) "\")\n")
 ;; (set-default-font "-apple-Anonymous_Pro-medium-normal-normal-*-20-*-*-*-m-0-iso10646-1")
@@ -125,7 +128,7 @@
                   (subword-mode +1)))
 
      ;; (add-to-list 'load-path (expand-file-name "~/apps/ensime/elisp/"))
-     (add-to-list 'load-path (expand-file-name "~/apps/ensime-github/dist_2.9.2/elisp"))
+     (add-to-list 'load-path (expand-file-name "~/apps/ensime/elisp"))
 
      (require 'ensime)
 
@@ -258,3 +261,15 @@
 
 (global-set-key [C-S-right] 'shift-right)
 (global-set-key [C-S-left] 'shift-left)
+
+;; switch buffers with M-NUM
+(require 'window-number)
+(window-number-mode)
+(window-number-meta-mode)
+
+;; enables arrows in comint mode
+(require 'comint)
+(define-key comint-mode-map (kbd "M-") 'comint-next-input)
+(define-key comint-mode-map (kbd "M-") 'comint-previous-input)
+(define-key comint-mode-map [down] 'comint-next-matching-input-from-input)
+(define-key comint-mode-map [up] 'comint-previous-matching-input-from-input)
