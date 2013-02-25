@@ -81,7 +81,10 @@
 ;; (insert "\n(set-default-font \"" (cdr (assoc 'font (frame-parameters))) "\")\n")
 ;; (set-default-font "-apple-Anonymous_Pro-medium-normal-normal-*-20-*-*-*-m-0-iso10646-1")
 
-(set-default-font "-apple-Source_Code_Pro-medium-normal-normal-*-20-*-*-*-m-0-iso10646-1")
+(set-frame-font "-apple-Source_Code_Pro-medium-normal-normal-*-20-*-*-*-m-0-iso10646-1")
+
+;; prelude sets it to 'meta...
+(setq mac-command-modifier 'super)
 
 ;; command -/= to scale text
 (global-set-key (kbd "s--") 'text-scale-decrease)
@@ -100,7 +103,7 @@
 (defun nuke-all-buffers ()
   "kill all buffers, leaving *scratch* only"
   (interactive)
-  (mapcar (lambda (x) (kill-buffer x))
+  (mapc (lambda (x) (kill-buffer x))
           (buffer-list))
   (delete-other-windows))
 
@@ -121,6 +124,7 @@
 
      (add-hook 'scala-mode-hook
                '(lambda ()
+                  (flymake-mode)
                   (add-hook 'before-save-hook 'whitespace-cleanup)
                   (local-set-key [f7] 'ensime-sbt-switch)
                   (local-set-key [S-f7] 'ensime-sbt-clear)
@@ -262,10 +266,10 @@
 (global-set-key [C-S-right] 'shift-right)
 (global-set-key [C-S-left] 'shift-left)
 
-;; switch buffers with M-NUM
-(require 'window-number)
-(window-number-mode)
-(window-number-meta-mode)
+; ;; switch buffers with M-NUM
+; (require 'window-number)
+; (window-number-mode)
+; (window-number-meta-mode)
 
 ;; enables arrows in comint mode
 (require 'comint)
