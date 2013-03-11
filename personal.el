@@ -89,7 +89,23 @@
 ;; command -/= to scale text
 (global-set-key (kbd "s--") 'text-scale-decrease)
 (global-set-key (kbd "s-=") 'text-scale-increase)
-(global-set-key (kbd "s-F") 'ns-toggle-fullscreen)
+(global-set-key (kbd "s-F") 'ag-toggle-fullscreen)
+
+(defun ag-toggle-fullscreen ()
+  "Toggle full screen"
+  (interactive)
+
+  (if (version< emacs-version "24.3")
+      (ns-toggle-fullscreen)
+    (if (not (frame-parameter nil 'fullscreen))
+        (set-frame-parameter nil 'fullscreen 'fullboth)
+      (progn
+        (set-frame-parameter nil 'fullscreen nil)
+        ;; weird, but it seems that I have to turn tool bar on and off
+        ;; for full screen to work in snow leopard
+        (tool-bar-mode 1)
+        (tool-bar-mode -1)))))
+
 
 (defun set-frame-position-to-zero ()
   (interactive)
@@ -277,3 +293,23 @@
 (define-key comint-mode-map (kbd "M-") 'comint-previous-input)
 (define-key comint-mode-map [down] 'comint-next-matching-input-from-input)
 (define-key comint-mode-map [up] 'comint-previous-matching-input-from-input)
+
+;; (when (load "flymake" t)
+;;   (defun flymake-pylint-init ()
+;;     (let* ((temp-file (flymake-init-create-temp-buffer-copy
+;;                        'flymake-create-temp-inplace))
+;;            (local-file (file-relative-name
+;;                         temp-file
+;;                         (file-name-directory buffer-file-name))))
+;;       (list "epylint" (list local-file))))
+;;   (add-to-list 'flymake-allowed-file-name-masks
+;;                '("\\.py\\'" flymake-pylint-init)))
+
+
+(add-hook 'python-mode-hook
+          '(lambda ()
+             (local-set-key [f7] 'python-shell-switch-to-shell)))
+
+
+(require 'highlight-symbol)
+(global-set-key [mouse-3] 'highlight-symbol-at-point)
