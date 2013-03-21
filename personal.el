@@ -313,3 +313,26 @@
 
 (require 'highlight-symbol)
 (global-set-key [mouse-3] 'highlight-symbol-at-point)
+
+(require 'sr-speedbar)
+
+;; show all files
+(setq speedbar-show-unknown-files t)
+
+;; turn off the ugly icons
+(setq speedbar-use-images nil)
+
+;; left-side pane
+(setq sr-speedbar-right-side nil)
+
+;; don't refresh on buffer changes
+(setq sr-speedbar-auto-refresh nil)
+
+;; make speedbar text smaller
+(setq speedbar-mode-hook
+      '(lambda ()
+         (progn
+           (message "whoa")
+           (text-scale-decrease 2))))
+
+(global-set-key [s-f12] 'sr-speedbar-toggle)
