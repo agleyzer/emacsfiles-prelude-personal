@@ -81,7 +81,7 @@
 ;; (insert "\n(set-default-font \"" (cdr (assoc 'font (frame-parameters))) "\")\n")
 ;; (set-default-font "-apple-Anonymous_Pro-medium-normal-normal-*-20-*-*-*-m-0-iso10646-1")
 
-(set-frame-font "-apple-Source_Code_Pro-medium-normal-normal-*-20-*-*-*-m-0-iso10646-1")
+(set-frame-font "-apple-Source_Code_Pro-medium-normal-normal-*-20-*-*-*-m-0-iso10646-1" t t)
 
 ;; prelude sets it to 'meta...
 (setq mac-command-modifier 'super)
@@ -315,6 +315,8 @@
 (global-set-key [mouse-3] 'highlight-symbol-at-point)
 
 (require 'sr-speedbar)
+
+(setq sr-speedbar-width 15)
 
 ;; show all files
 (setq speedbar-show-unknown-files t)
