@@ -77,11 +77,19 @@
 (add-to-list 'auto-mode-alist '("\\.ctxinc$" . javascript-mode))
 (add-to-list 'auto-mode-alist '("\\.in$" . javascript-mode))
 
-
 ;; (insert "\n(set-default-font \"" (cdr (assoc 'font (frame-parameters))) "\")\n")
 ;; (set-default-font "-apple-Anonymous_Pro-medium-normal-normal-*-20-*-*-*-m-0-iso10646-1")
 
-(set-frame-font "-apple-Source_Code_Pro-medium-normal-normal-*-20-*-*-*-m-0-iso10646-1" t t)
+;; (set-frame-font "-apple-Source_Code_Pro-medium-normal-normal-*-18-*-*-*-m-0-iso10646-1" t t)
+
+(defun fontify-frame (frame)
+  (set-frame-parameter frame 'font "-apple-Source_Code_Pro-medium-normal-normal-*-18-*-*-*-m-0-iso10646-1"))
+
+;; Fontify current frame
+(fontify-frame nil)
+
+;; Fontify any future frames
+(push 'fontify-frame after-make-frame-functions)
 
 ;; prelude sets it to 'meta...
 (setq mac-command-modifier 'super)
@@ -134,6 +142,21 @@
 
 (add-to-list 'auto-mode-alist '("\\.scala$" . scala-mode))
 
+;; (defun my-sbt-switch ()
+;;   "Switch to the sbt shell (create if necessary) if or if already there, back.
+;;    If already there but the process is dead, restart the process. "
+;;   (interactive)
+;;   (let ((sbt-buf "*sbt*"))
+;;     (if (equal sbt-buf (buffer-name))
+;;         (switch-to-buffer-other-window (other-buffer))
+;;       (if (get-buffer sbt-buf)
+;;           (progn
+;;             (switch-to-buffer-other-window sbt-buf)
+;;             (goto-char (point-max)))
+;;         (message "SBT is not running?")))))
+;;
+;; (global-set-key [f7] 'my-sbt-switch)
+
 (eval-after-load 'scala-mode2
   '(progn
      (message "scala-mode2 ftw")
@@ -165,7 +188,17 @@
 
      ;; (ad-activate 'ensime-config-maybe-set-active-subproject)
 
-     (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)))
+     (require 'key-chord)
+
+     (key-chord-mode +1)
+
+     (key-chord-define-global "ii" 'ensime-import-type-at-point)
+     (key-chord-define-global "II" 'ensime-refactor-organize-imports)
+     (key-chord-define-global "qq" 'ensime-inf-switch)
+
+     (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+))
+
 
 (defun my-pop-global-mark ()
   "Pop off global mark ring and jump to the top location."
