@@ -136,7 +136,41 @@
   (delete-other-windows)
   (split-window)
   (other-window 1)
-  (shell))
+  (ansi-term "/bin/zsh" "localhost"))
+
+(require 'term)
+(defun visit-ansi-term ()
+  "If the current buffer is:
+     1) a running ansi-term named *ansi-term*, rename it.
+     2) a stopped ansi-term, kill it and create a new one.
+     3) a non ansi-term, go to an already running ansi-term
+        or start a new one while killing a defunt one"
+  (interactive)
+  (let ((is-term (string= "term-mode" major-mode))
+        (is-running (term-check-proc (buffer-name)))
+        (term-cmd "/bin/zsh")
+        (anon-term (get-buffer "*ansi-term*")))
+    (if is-term
+        (if is-running
+            (if (string= "*ansi-term*" (buffer-name))
+                (call-interactively 'rename-buffer)
+              (if anon-term
+                  (switch-to-buffer-other-window "*ansi-term*")
+                (ansi-term term-cmd)))
+          (kill-buffer (buffer-name))
+          (ansi-term term-cmd))
+      (if anon-term
+          (if (term-check-proc "*ansi-term*")
+              (switch-to-buffer-other-window "*ansi-term*")
+            (kill-buffer "*ansi-term*")
+            (delete-other-windows)
+            (split-window)
+            (other-window 1)
+            (ansi-term term-cmd))
+        (delete-other-windows)
+        (split-window)
+        (other-window 1)
+        (ansi-term term-cmd)))))
 
 ;; Scala and Ensime
 
@@ -232,7 +266,7 @@
 (when (require 'deft nil) 'noerror
   (setq
    deft-extension "org"
-   deft-directory "~/Dropbox/orgfiles/"
+   deft-directory "~/OldDropbox/orgfiles/"
    deft-text-mode 'org-mode))
 
 ;; change magit diff colors
@@ -295,7 +329,7 @@
  (face-list))
 
 ;; Set some keys - that's the way I like it :)
-(global-set-key "\M-s" 'my-shell)
+(global-set-key "\M-s" 'visit-ansi-term)
 (global-set-key "\M-g" 'goto-line)
 
 (global-set-key [C-tab] 'other-window)
@@ -303,7 +337,7 @@
 (global-set-key [end] 'end-of-line)
 
 (global-set-key [f2] 'deft)
-(global-set-key [f3] 'set-frame-position-to-zero)
+(global-set-key [f3] 'visit-ansi-term)
 (global-set-key [f4] 'compile)
 
 (global-set-key [f5] 'nuke-all-buffers)
@@ -322,8 +356,8 @@
 
 ;; enables arrows in comint mode
 (require 'comint)
-(define-key comint-mode-map (kbd "M-") 'comint-next-input)
-(define-key comint-mode-map (kbd "M-") 'comint-previous-input)
+;; (define-key comint-mode-map (kbd "M-") 'comint-next-input)
+;; (define-key comint-mode-map (kbd "M-") 'comint-previous-input)
 (define-key comint-mode-map [down] 'comint-next-matching-input-from-input)
 (define-key comint-mode-map [up] 'comint-previous-matching-input-from-input)
 
