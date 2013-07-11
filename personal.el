@@ -77,20 +77,6 @@
 (add-to-list 'auto-mode-alist '("\\.ctxinc$" . javascript-mode))
 (add-to-list 'auto-mode-alist '("\\.in$" . javascript-mode))
 
-;; (insert "\n(set-default-font \"" (cdr (assoc 'font (frame-parameters))) "\")\n")
-;; (set-default-font "-apple-Anonymous_Pro-medium-normal-normal-*-20-*-*-*-m-0-iso10646-1")
-
-;; (set-frame-font "-apple-Source_Code_Pro-medium-normal-normal-*-18-*-*-*-m-0-iso10646-1" t t)
-
-(defun fontify-frame (frame)
-  (set-frame-parameter frame 'font "-apple-Source_Code_Pro-medium-normal-normal-*-18-*-*-*-m-0-iso10646-1"))
-
-;; Fontify current frame
-(fontify-frame nil)
-
-;; Fontify any future frames
-(push 'fontify-frame after-make-frame-functions)
-
 ;; prelude sets it to 'meta...
 (setq mac-command-modifier 'super)
 
@@ -377,6 +363,9 @@
           '(lambda ()
              (local-set-key [f7] 'python-shell-switch-to-shell)))
 
+
+(setq ipython-command "/usr/local/share/python/ipython")
+(require 'ipython)
 
 (require 'highlight-symbol)
 (global-set-key [mouse-3] 'highlight-symbol-at-point)
