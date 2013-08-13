@@ -1,6 +1,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Disabling some stupid prelude settings. ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(setq mac-command-modifier 'super)
+(setq mac-option-modifier 'meta)
 
 ;; paredit mode is driving me nuts
 (defun disable-prelude-lisp-mode-crap ()
@@ -16,6 +18,7 @@
 
 ;; disable annoying parens
 (electric-pair-mode -1)
+(smartparens-global-mode -1)
 
 ;; disable stupid prelude defaults
 (defun prelude-c-mode-common-defaults ()
@@ -27,7 +30,7 @@
 (setq prelude-flyspell nil)
 (setq prelude-guru nil)
 (yas-global-mode -1)
-
+(show-paren-mode 1)
 
 ;; disabling prelude-whitespace removes whitespace cleanup... fuck
 (defun my-prog-mode-defaults ()
@@ -364,8 +367,8 @@
              (local-set-key [f7] 'python-shell-switch-to-shell)))
 
 
-(setq ipython-command "/usr/local/share/python/ipython")
-(require 'ipython)
+;; (setq ipython-command "/usr/local/share/python/ipython")
+;; (require 'ipython)
 
 (require 'highlight-symbol)
 (global-set-key [mouse-3] 'highlight-symbol-at-point)
