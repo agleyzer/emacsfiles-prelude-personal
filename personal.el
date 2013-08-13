@@ -325,6 +325,7 @@
 (global-set-key [home] 'beginning-of-line)
 (global-set-key [end] 'end-of-line)
 
+(global-set-key [f1] 'helm-man-woman)
 (global-set-key [f2] 'deft)
 (global-set-key [f3] 'visit-ansi-term)
 (global-set-key [f4] 'compile)
