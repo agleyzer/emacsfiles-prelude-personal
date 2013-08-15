@@ -35,9 +35,6 @@
  '(size-indication-mode t)
  '(speedbar-show-unknown-files t)
  '(speedbar-use-images nil)
- '(sql-database "adx-db01.qprvt.nytimes.com:1531/ADXDV8")
- '(sql-password "adx789")
- '(sql-user "adx")
  '(tool-bar-mode nil)
  '(tramp-verbose 5)
  '(vc-annotate-background "#2B2B2B")
@@ -51,4 +48,5 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Source Code Pro" :foundry "nil" :slant normal :weight normal :height 161 :width normal)))))
+ '(default ((t (:family "Source Code Pro" :foundry "nil" :slant normal :weight normal :height 161 :width normal))))
+ '(error ((t (:background "Red" :foreground "White")))))
