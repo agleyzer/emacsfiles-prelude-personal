@@ -398,3 +398,6 @@
            (text-scale-decrease 2))))
 
 (global-set-key [s-f12] 'sr-speedbar-toggle)
+
+(require 'powerline)
+(powerline-default-theme)
