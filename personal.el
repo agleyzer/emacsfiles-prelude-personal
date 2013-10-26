@@ -180,18 +180,43 @@
 ;;
 ;; (global-set-key [f7] 'my-sbt-switch)
 
+(defun my-eval-scala ()
+  (interactive)
+  (let (
+        (selection (buffer-substring-no-properties (region-beginning) (region-end))))
+    (if (= (length selection) 0)
+        (ensime-inf-eval-definition)
+      (ensime-inf-eval-region (region-beginning) (region-end)))))
+
+(defun my-scala-find-tag ()
+  "Meant to be set as M-."
+  (interactive)
+  (if (ensime-connected-p) (call-interactively 'ensime-edit-definition)
+    (call-interactively 'find-tag)))
+
+(defun my-scala-mode-hook ()
+  (flymake-mode)
+  (add-hook 'before-save-hook 'whitespace-cleanup)
+  (local-set-key [f7] 'ensime-sbt-switch)
+  (local-set-key [S-f7] 'ensime-sbt-clear)
+  (local-set-key [f8] 'ensime-inf-switch)
+  (local-set-key [f4] 'ensime-inf-eval-region)
+  (local-set-key [S-f4] 'ensime-inf-eval-definition)
+
+  ;;(local-set-key (kbd "M-.") 'my-scala-find-tag)
+  (define-key ensime-mode-map (kbd "M-.") 'my-scala-find-tag)
+
+  (subword-mode +1)
+
+  (require 'key-chord)
+  (key-chord-mode +1)
+  (key-chord-define ensime-mode-map "ii" 'ensime-import-type-at-point)
+  (key-chord-define ensime-mode-map "II" 'ensime-refactor-organize-imports)
+  (key-chord-define ensime-mode-map "qq" 'ensime-inf-switch))
+
 (eval-after-load 'scala-mode2
   '(progn
      (message "scala-mode2 ftw")
-
-     (add-hook 'scala-mode-hook
-               '(lambda ()
-                  (flymake-mode)
-                  (add-hook 'before-save-hook 'whitespace-cleanup)
-                  (local-set-key [f7] 'ensime-sbt-switch)
-                  (local-set-key [S-f7] 'ensime-sbt-clear)
-                  (local-set-key [f8] 'ensime-inf-switch)
-                  (subword-mode +1)))
 
      ;; (add-to-list 'load-path (expand-file-name "~/apps/ensime/elisp/"))
      (add-to-list 'load-path (expand-file-name "~/apps/ensime/elisp"))
@@ -210,15 +235,7 @@
      ;;     ad-do-it))
 
      ;; (ad-activate 'ensime-config-maybe-set-active-subproject)
-
-     (require 'key-chord)
-
-     (key-chord-mode +1)
-
-     (key-chord-define-global "ii" 'ensime-import-type-at-point)
-     (key-chord-define-global "II" 'ensime-refactor-organize-imports)
-     (key-chord-define-global "qq" 'ensime-inf-switch)
-
+     (add-hook 'scala-mode-hook 'my-scala-mode-hook)
      (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 ))
 
@@ -401,3 +418,20 @@
 
 (require 'powerline)
 (powerline-default-theme)
+
+;; Temp fix for https://github.com/nex3/magithub/pull/12
+(setq magit-log-edit-confirm-cancellation t)
+
+
+;; Toggle window dedication
+
+(defun toggle-window-dedicated ()
+  "Toggle whether the current active window is dedicated or not"
+  (interactive)
+  (message
+   (if (let (window (get-buffer-window (current-buffer)))
+         (set-window-dedicated-p window
+                                 (not (window-dedicated-p window))))
+       "Window '%s' is dedicated"
+     "Window '%s' is normal")
+   (current-buffer)))
