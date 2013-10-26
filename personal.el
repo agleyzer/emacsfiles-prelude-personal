@@ -272,7 +272,7 @@
 (when (require 'deft nil) 'noerror
   (setq
    deft-extension "org"
-   deft-directory "~/OldDropbox/orgfiles/"
+   deft-directory "~/Dropbox/orgfiles/"
    deft-text-mode 'org-mode))
 
 ;; change magit diff colors
