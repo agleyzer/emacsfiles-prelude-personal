@@ -6,10 +6,10 @@
 
 ;; paredit mode is driving me nuts
 (defun disable-prelude-lisp-mode-crap ()
+  (smartparens-mode -1)
   (paredit-mode -1)
   (diminish 'rainbow-mode)
-  (diminish 'volatile-highlights-mode)
-)
+  (diminish 'volatile-highlights-mode))
 
 (add-hook 'emacs-lisp-mode-hook 'disable-prelude-lisp-mode-crap t)
 
@@ -19,6 +19,7 @@
 ;; disable annoying parens
 (electric-pair-mode -1)
 (smartparens-global-mode -1)
+(show-smartparens-global-mode -1)
 
 ;; disable stupid prelude defaults
 (defun prelude-c-mode-common-defaults ()
@@ -34,6 +35,7 @@
 
 ;; disabling prelude-whitespace removes whitespace cleanup... fuck
 (defun my-prog-mode-defaults ()
+  (smartparens-mode -1)
   (add-hook 'before-save-hook 'whitespace-cleanup nil t))
 
 (add-hook 'prelude-prog-mode-hook 'my-prog-mode-defaults t)
@@ -416,12 +418,16 @@
 
 (global-set-key [s-f12] 'sr-speedbar-toggle)
 
-(require 'powerline)
-(powerline-default-theme)
+;; (require 'powerline)
+;; (powerline-default-theme)
+(require 'smart-mode-line)
+(sml/setup)
+
+;; (if after-init-time (sml/setup)
+;;   (add-hook 'after-init-hook 'sml/setup))
 
 ;; Temp fix for https://github.com/nex3/magithub/pull/12
 (setq magit-log-edit-confirm-cancellation t)
-
 
 ;; Toggle window dedication
 
