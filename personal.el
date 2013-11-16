@@ -36,7 +36,8 @@
 ;; disabling prelude-whitespace removes whitespace cleanup... fuck
 (defun my-prog-mode-defaults ()
   (smartparens-mode -1)
-  (add-hook 'before-save-hook 'whitespace-cleanup nil t))
+  (add-hook 'before-save-hook 'whitespace-cleanup nil t)
+  (git-gutter+-mode))
 
 (add-hook 'prelude-prog-mode-hook 'my-prog-mode-defaults t)
 
@@ -441,3 +442,10 @@
        "Window '%s' is dedicated"
      "Window '%s' is normal")
    (current-buffer)))
+
+
+(defun my-what-face (pos)
+  (interactive "d")
+  (let ((face (or (get-char-property (point) 'read-face-name)
+                  (get-char-property (point) 'face))))
+    (if face (message "Face: %s" face) (message "No face at %d" pos))))
