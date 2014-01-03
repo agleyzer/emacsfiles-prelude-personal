@@ -62,8 +62,8 @@
 ;; turn off the bell
 (setq ring-bell-function 'ignore)
 
+;; (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 
 (defun my-c++-hook ()
   (local-set-key (quote [f4]) (lambda () (interactive )(compile "rmake"))))
@@ -449,3 +449,19 @@
   (let ((face (or (get-char-property (point) 'read-face-name)
                   (get-char-property (point) 'face))))
     (if face (message "Face: %s" face) (message "No face at %d" pos))))
+
+;; (load-theme 'wombat-agleyzer)
+;; (load-theme 'adwaita)
+
+;; helps dealing with read-only ensime-sbt... copied from help for
+;; comint-prompt-read-only
+(add-hook 'comint-mode-hook
+	  (lambda ()
+	    (define-key comint-mode-map "\C-w" 'comint-kill-region)
+	    (define-key comint-mode-map [C-S-backspace]
+	      'comint-kill-whole-line)))
+
+;; TEST AREA
+
+(require 'popwin)
+(popwin-mode 1)
