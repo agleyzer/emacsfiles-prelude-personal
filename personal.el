@@ -36,8 +36,7 @@
 ;; disabling prelude-whitespace removes whitespace cleanup... fuck
 (defun my-prog-mode-defaults ()
   (smartparens-mode -1)
-  (add-hook 'before-save-hook 'whitespace-cleanup nil t)
-  (git-gutter+-mode))
+  (add-hook 'before-save-hook 'whitespace-cleanup nil t))
 
 (add-hook 'prelude-prog-mode-hook 'my-prog-mode-defaults t)
 
@@ -465,3 +464,46 @@
 
 (require 'popwin)
 (popwin-mode 1)
+
+;; GOGOGOGO
+(setenv "GOPATH" (expand-file-name "~/Projects/go"))
+
+;; (setenv "PATH" (concat (getenv "PATH") ":" "/extra/path/element"))
+;; (setq exec-path (append exec-path (list (expand-file-name "/another/thing"))))
+(add-to-list 'load-path
+             (substitute-in-file-name "$GOPATH/src/github.com/dougm/goflymake"))
+
+;; https://github.com/dougm/goflymake/issues/7
+(defcustom goflymake-debug nil
+  "Enable failure debugging mode in goflymake."
+  :type 'boolean
+  :group 'goflymake)
+
+(require 'go-flycheck)
+
+(add-hook 'go-mode-hook
+          (lambda ()
+            (require 'key-chord)
+            (key-chord-mode +1)
+            (key-chord-define go-mode-map "ii" 'go-goto-imports)
+            (key-chord-define go-mode-map "jj" 'godef-jump)
+            (key-chord-define go-mode-map "dd" 'godef-describe)
+            (local-set-key (kbd "M-.") 'godef-jump)))
+
+(require 'git-gutter-fringe)
+(global-git-gutter-mode t)
+(setq git-gutter-fr:side 'right-fringe)
+
+
+;; update custom-theme-load-path, since elpa packages keep changing
+;; their directory name
+
+(-each
+ (-map
+  (lambda (item)
+    (format "~/.emacs.d/elpa/%s" item))
+  (-filter
+   (lambda (item) (s-contains? "theme" item))
+   (directory-files "~/.emacs.d/elpa/")))
+ (lambda (item)
+   (add-to-list 'custom-theme-load-path item)))
