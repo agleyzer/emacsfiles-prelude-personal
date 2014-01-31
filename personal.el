@@ -54,6 +54,15 @@
       (ansi-term "/bin/zsh")
     (switch-to-buffer "*ansi-term*")))
 
+(defun my-visit-shell-buffer ()
+  (interactive)
+  (if (get-buffer "*shell*")
+      (switch-to-buffer-other-window "*shell*")
+    (delete-other-windows)
+    (split-window)
+    (other-window 1)
+    (shell)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Other custom settings ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -337,7 +346,7 @@
  (face-list))
 
 ;; Set some keys - that's the way I like it :)
-(global-set-key "\M-s" 'visit-ansi-term)
+(global-set-key "\M-s" 'my-visit-shell-buffer)
 (global-set-key "\M-g" 'goto-line)
 
 (global-set-key [C-tab] 'other-window)
@@ -346,7 +355,7 @@
 
 (global-set-key [f1] 'helm-man-woman)
 (global-set-key [f2] 'deft)
-(global-set-key [f3] 'visit-ansi-term)
+(global-set-key [f3] 'my-visit-shell-buffer)
 (global-set-key [f4] 'compile)
 
 (global-set-key [f5] 'nuke-all-buffers)
@@ -468,8 +477,11 @@
 ;; GOGOGOGO
 (setenv "GOPATH" (expand-file-name "~/Projects/go"))
 
-;; (setenv "PATH" (concat (getenv "PATH") ":" "/extra/path/element"))
-;; (setq exec-path (append exec-path (list (expand-file-name "/another/thing"))))
+(setenv "PATH" (concat (getenv "PATH") ":"
+                       (substitute-in-file-name "$GOPATH/bin")))
+
+(setq exec-path (append exec-path (list (substitute-in-file-name "$GOPATH/bin"))))
+
 (add-to-list 'load-path
              (substitute-in-file-name "$GOPATH/src/github.com/dougm/goflymake"))
 
@@ -484,16 +496,15 @@
 (add-hook 'go-mode-hook
           (lambda ()
             (require 'key-chord)
+            (setq tab-width 4)
             (key-chord-mode +1)
             (key-chord-define go-mode-map "ii" 'go-goto-imports)
             (key-chord-define go-mode-map "jj" 'godef-jump)
             (key-chord-define go-mode-map "dd" 'godef-describe)
             (local-set-key (kbd "M-.") 'godef-jump)))
 
-(require 'git-gutter-fringe)
-(global-git-gutter-mode t)
-(setq git-gutter-fr:side 'right-fringe)
 
+(global-diff-hl-mode 1)
 
 ;; update custom-theme-load-path, since elpa packages keep changing
 ;; their directory name
